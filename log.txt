@@ -1,2 +1,1 @@
-[2025-06-20 09:47:23] Error sending email: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
-[2025-06-20 09:47:25] Error sending email: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+
