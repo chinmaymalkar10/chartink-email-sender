@@ -1,6 +1,7 @@
 import smtplib
 from email.message import EmailMessage
 from datetime import datetime
+import pytz
 
 EMAIL_SENDER = 'onliogs69@gmail.com'
 EMAIL_PASSWORD = 'jfvp avby mhwj trlx'  # Use Gmail App Password
@@ -22,5 +23,7 @@ def send_email(stock_name):
         log(f"Error sending email: {e}")
 
 def log(message):
+    ist = pytz.timezone("Asia/Kolkata")
+    ist_time = datetime.now(ist).strftime('%Y-%m-%d %H:%M:%S')
     with open("log.txt", "a") as f:
-        f.write(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {message}\n")
+        f.write(f"[{ist_time}] {message}\n")
