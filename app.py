@@ -13,11 +13,17 @@ def home():
 
 @app.route('/logs')
 def get_logs():
-    if not os.path.exists("log.txt"):
-        return jsonify([])
-    with open("log.txt", "r") as f:
-        lines = f.readlines()
-    return jsonify(lines[-20:])  # last 20 logs
+    buy_logs = []
+    sell_logs = []
+    if os.path.exists("log.txt"):
+        with open("log.txt", "r") as f:
+            lines = f.readlines()
+        for line in lines[-100:]:  # Only last 100 entries
+            if "Buy Entry" in line:
+                buy_logs.append(line.strip())
+            elif "Sell Entry" in line:
+                sell_logs.append(line.strip())
+    return jsonify({"buy": buy_logs, "sell": sell_logs})
 
 if __name__ == '__main__':
     app.run(debug=True)
