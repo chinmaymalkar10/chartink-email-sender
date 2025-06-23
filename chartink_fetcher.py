@@ -2,7 +2,7 @@ import threading
 import time
 import requests
 from bs4 import BeautifulSoup
-from email_sender import send_email
+from email_sender import send_notification
 
 charting_link = "https://chartink.com/screener/"
 charting_url = "https://chartink.com/screener/process"
@@ -14,7 +14,10 @@ stocks = [
     "TATACHEM", "TCS", "TATACONSUM", "TECHM", "TITAN", "TORNTPHARM", "TORNTPOWER", "UBL", "UNITDSPR", "VOLTAS"
 ]
 
-condition = "( ( [0] 5 minute adx ( 14 ) > 25 and [0] 5 minute close >= 800 and [0] 5 minute close <= 4000 and [0] 5 minute close < [0] 5 minute sma ( close,8 ) and [0] 5 minute close < 1 day ago low and [-1] 5 minute close > 1 day ago low and abs ( 1 day ago low - latest open ) <= latest open * 0.007 ) ) "
+condition_sell = "( ( [0] 5 minute adx ( 14 ) > 25 and [0] 5 minute close >= 800 and [0] 5 minute close <= 4000 and [0] 5 minute close < [0] 5 minute sma ( close,8 ) and [0] 5 minute close < 1 day ago low and [-1] 5 minute close > 1 day ago low and abs ( 1 day ago low - latest open ) <= latest open * 0.007 ) ) "
+
+condition_buy = "( ( [0] 5 minute adx ( 14 ) > 25 and [0] 5 minute close >= 800 and [0] 5 minute close <= 4000 and [0] 5 minute close > [0] 5 minute sma ( close,8 ) and [0] 5 minute close > 1 day ago high and [0] 5 minute close > 1 day ago high and [-1] 5 minute close <= 1 day ago high and abs ( 1 day ago high - latest open ) <= latest open * 0.007 ) ) "
+
 
 def getData(payload):
     payload = {'scan_clause': payload}
@@ -36,12 +39,17 @@ def getData(payload):
         return []
 
 def poll_chartink():
+    send_notification("start", "hi")
     while True:
-        data = getData(condition)
-        if data:
-            for stock in data:
-                send_email(stock)
-            time.sleep(240)  # poll every 1 minute
+        buy_stocks = getData(condition_buy)
+        for stock in buy_stocks:
+            send_notification(stock, "Buy Entry")
+
+        sell_stocks = getData(condition_sell)
+        for stock in sell_stocks:
+            send_notification(stock, "Sell Entry")
+
+        time.sleep(240)
 
 def start_background_task():
     t = threading.Thread(target=poll_chartink, daemon=True)
