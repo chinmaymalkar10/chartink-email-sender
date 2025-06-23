@@ -41,7 +41,7 @@ def poll_chartink():
         if data:
             for stock in data:
                 send_email(stock)
-        time.sleep(60)  # poll every 1 minute
+        time.sleep(240)  # poll every 1 minute
 
 def start_background_task():
     t = threading.Thread(target=poll_chartink, daemon=True)
