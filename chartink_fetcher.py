@@ -39,15 +39,20 @@ def getData(payload):
         return []
 
 def poll_chartink():
-    send_notification("start", "hi")
     while True:
+        stocks = ""
         buy_stocks = getData(condition_buy)
         for stock in buy_stocks:
-            send_notification(stock, "Buy Entry")
-
+            stocks += stock+" , "
+        if stocks != "":
+            send_notification(stocks, "Buy Entry")
+        
+        stocks = ""
         sell_stocks = getData(condition_sell)
         for stock in sell_stocks:
-            send_notification(stock, "Sell Entry")
+            stocks += stock+" , "
+        if stocks != "":
+            send_notification(stocks, "Sell Entry")
 
         time.sleep(240)
 
