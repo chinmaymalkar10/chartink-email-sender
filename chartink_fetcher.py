@@ -3,7 +3,11 @@ import time
 import requests
 from bs4 import BeautifulSoup
 from email_sender import send_notification
+from datetime import datetime, timedelta
+import pytz
 
+last_alerts = {}
+IST = pytz.timezone("Asia/Kolkata")
 charting_link = "https://chartink.com/screener/"
 charting_url = "https://chartink.com/screener/process"
 stocks = [
@@ -39,22 +43,38 @@ def getData(payload):
         return []
 
 def poll_chartink():
+    global last_alerts
+
     while True:
+        now = datetime.now(IST)
+        
+        # ---- Buy Entry Check ----
         stocks = ""
         buy_stocks = getData(condition_buy)
         for stock in buy_stocks:
-            stocks += stock+" , "
-        if stocks != "":
-            send_notification(stocks, "Buy Entry")
-        
+            key = (stock, "Buy Entry")
+            last_time = last_alerts.get(key)
+
+            if not last_time or now - last_time > timedelta(minutes=5):
+                stocks += stock + " , "
+                last_alerts[key] = now  # Update alert time
+
+        if stocks:
+            send_notification(stocks.strip(" ,"), "Buy Entry")
+
+        # ---- Sell Entry Check ----
         stocks = ""
         sell_stocks = getData(condition_sell)
         for stock in sell_stocks:
-            stocks += stock+" , "
-        if stocks != "":
-            send_notification(stocks, "Sell Entry")
+            key = (stock, "Sell Entry")
+            last_time = last_alerts.get(key)
 
-        time.sleep(240)
+            if not last_time or now - last_time > timedelta(minutes=5):
+                stocks += stock + " , "
+                last_alerts[key] = now  # Update alert time
+
+        if stocks:
+            send_notification(stocks.strip(" ,"), "Sell Entry")
 
 def start_background_task():
     t = threading.Thread(target=poll_chartink, daemon=True)
