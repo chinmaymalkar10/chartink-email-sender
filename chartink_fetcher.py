@@ -36,7 +36,7 @@ def getData(payload):
             df = []
             for item in r.json()['data']:
                 if item['nsecode'] in stocks:
-                    df.append(item['name'])
+                    df.append(item['nsecode'])
             return df
     except Exception as e:
         print(f"Chartink fetch error: {e}")
@@ -76,7 +76,7 @@ def poll_chartink():
         if stocks:
             send_notification(stocks.strip(" ,"), "Sell Entry")
 
-        time.sleep(120)
+        time.sleep(30)
 
 def start_background_task():
     t = threading.Thread(target=poll_chartink, daemon=True)
