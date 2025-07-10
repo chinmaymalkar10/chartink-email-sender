@@ -20,7 +20,7 @@ stocks = [
 
 condition_sell = "( ( [0] 5 minute adx ( 14 ) > 25 and [0] 5 minute close >= 800 and [0] 5 minute close <= 4000 and [0] 5 minute close < [0] 5 minute sma ( close,8 ) and [0] 5 minute close < 1 day ago low and [-1] 5 minute close > 1 day ago low and abs ( 1 day ago low - latest open ) <= latest open * 0.007 ) ) "
 
-condition_buy = "( ( [0] 5 minute adx ( 14 ) > 25 and [0] 5 minute close >= 800 and [0] 5 minute close <= 4000 and [0] 5 minute close > [0] 5 minute sma ( close,8 ) and [0] 5 minute close > 1 day ago high and [0] 5 minute close > 1 day ago high and [-1] 5 minute close <= 1 day ago high and abs ( 1 day ago high - latest open ) <= latest open * 0.007 ) ) "
+condition_buy = "( ( [0] 5 minute adx ( 14 ) > 25 and [0] 5 minute close >= 800 and [0] 5 minute close <= 4000 and [0] 5 minute close > [0] 5 minute sma ( close,8 ) and [0] 5 minute close > 1 day ago high and [-1] 5 minute close <= 1 day ago high ) ) "
 
 
 def getData(payload):
