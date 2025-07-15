@@ -3,7 +3,7 @@ import time
 import requests
 from bs4 import BeautifulSoup
 from email_sender import send_notification
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time as dt_time
 import pytz
 
 last_alerts = {}
@@ -47,36 +47,39 @@ def poll_chartink():
 
     while True:
         now = datetime.now(IST)
-        
-        # ---- Buy Entry Check ----
-        stocks = ""
-        buy_stocks = getData(condition_buy)
-        for stock in buy_stocks:
-            key = (stock, "Buy Entry")
-            last_time = last_alerts.get(key)
+        start_time = dt_time(hour=9, minute=10)
+        end_time = dt_time(hour=12, minute=45)
 
-            if not last_time or now - last_time > timedelta(minutes=10):
-                stocks += stock + " , "
-                last_alerts[key] = now  # Update alert time
-
-        if stocks:
-            send_notification(stocks.strip(" ,"), "Buy Entry")
-
-        # ---- Sell Entry Check ----
-        stocks = ""
-        sell_stocks = getData(condition_sell)
-        for stock in sell_stocks:
-            key = (stock, "Sell Entry")
-            last_time = last_alerts.get(key)
-
-            if not last_time or now - last_time > timedelta(minutes=10):
-                stocks += stock + " , "
-                last_alerts[key] = now  # Update alert time
-
-        if stocks:
-            send_notification(stocks.strip(" ,"), "Sell Entry")
-
-        time.sleep(30)
+        if start_time <= now.time() <= end_time:
+            # ---- Buy Entry Check ----
+            stocks = ""
+            buy_stocks = getData(condition_buy)
+            for stock in buy_stocks:
+                key = (stock, "Buy Entry")
+                last_time = last_alerts.get(key)
+    
+                if not last_time or now - last_time > timedelta(minutes=10):
+                    stocks += stock + " , "
+                    last_alerts[key] = now  # Update alert time
+    
+            if stocks:
+                send_notification(stocks.strip(" ,"), "Buy Entry")
+    
+            # ---- Sell Entry Check ----
+            stocks = ""
+            sell_stocks = getData(condition_sell)
+            for stock in sell_stocks:
+                key = (stock, "Sell Entry")
+                last_time = last_alerts.get(key)
+    
+                if not last_time or now - last_time > timedelta(minutes=10):
+                    stocks += stock + " , "
+                    last_alerts[key] = now  # Update alert time
+    
+            if stocks:
+                send_notification(stocks.strip(" ,"), "Sell Entry")
+        else:
+            time.sleep(30)
 
 def start_background_task():
     t = threading.Thread(target=poll_chartink, daemon=True)
