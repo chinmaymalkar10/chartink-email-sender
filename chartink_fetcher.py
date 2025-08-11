@@ -11,8 +11,8 @@ IST = pytz.timezone("Asia/Kolkata")
 charting_link = "https://chartink.com/screener/"
 charting_url = "https://chartink.com/screener/process"
 stocks = [
-    "ACC", "AFFLE", "ASTRAL", "AUROPHARMA", "BAJAJFINSV", "BANKBARODA", "BDL", "BHARTIARTL", "CDSL",
-    "CHOLAFIN", "CIPLA", "DRREDDY", "GLENMARK", "MEDANTA", "HCLTECH", "HDFCBANK", "HAL", "HINDUNILVR",
+    "ACC", "AFFLE", "ASTRAL", "AUROPHARMA", "ASIANPAINT", "APLAPOLLO", "BAJAJFINSV", "BANKBARODA", "BDL", "BHARTIARTL", "CDSL",
+    "CHOLAFIN", "CIPLA", "DRREDDY", "GLENMARK", "MEDANTA", "HCLTECH", "HAL", "HINDUNILVR",
     "ICICIGI", "INDUSINDBK", "INFY", "LT", "LUPIN", "LODHA", "MAXHEALTH", "NESTLEIND", "PATANJALI",
     "POLICYBZR", "PIDILITIND", "PVRINOX", "RADICO", "RELIANCE", "SBICARD", "SRF", "SBIN", "SUNPHARMA",
     "TATACHEM", "TCS", "TATACONSUM", "TECHM", "TITAN", "TORNTPHARM", "TORNTPOWER", "UBL", "UNITDSPR", "VOLTAS"
@@ -79,7 +79,7 @@ def poll_chartink():
             if stocks:
                 send_notification(stocks.strip(" ,"), "Sell Entry")
         else:
-            time.sleep(30)
+            time.sleep(15)
 
 def start_background_task():
     t = threading.Thread(target=poll_chartink, daemon=True)
