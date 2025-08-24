@@ -1,1 +1,4 @@
 
+[2025-08-24 11:20:05] Buy Entry | Email sent for: RELIANCE
+[2025-08-24 11:21:10] Sell Entry | WhatsApp sent for: TCS
+[2025-08-24 11:22:33] ADX Buy Entry | Email sent for: INFY

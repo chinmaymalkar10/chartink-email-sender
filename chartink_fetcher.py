@@ -22,6 +22,8 @@ condition_sell = "( ( [0] 5 minute adx ( 14 ) > 25 and [0] 5 minute close >= 800
 
 condition_buy = "( ( [0] 5 minute adx ( 14 ) > 25 and [0] 5 minute close >= 800 and [0] 5 minute close <= 4000 and [0] 5 minute close > [0] 5 minute sma ( close,8 ) and [0] 5 minute close > 1 day ago high and [-1] 5 minute close <= 1 day ago high ) ) "
 
+condition_adx_buy = " ( ( [0] 5 minute adx ( 14 ) > 25 and [0] 5 minute close >= 800 and [0] 5 minute close <= 4000 and [0] 5 minute close > [0] 5 minute sma ( close,8 ) and [0] 5 minute close > [0] 5 minute ema ( [0] 5 minute close , 8 ) and [0] 5 minute close > [0] 5 minute ema ( [0] 5 minute close , 21 ) and [0] 5 minute close > 1 day ago high ) )  "
+
 
 def getData(payload):
     payload = {'scan_clause': payload}
@@ -78,6 +80,20 @@ def poll_chartink():
     
             if stocks:
                 send_notification(stocks.strip(" ,"), "Sell Entry")
+
+            # ---- ADX Buy Entry Check ----
+            stocks = ""
+            adx_stocks = getData(condition_adx_buy)
+            for stock in adx_stocks:
+                key = (stock, "ADX Buy Entry")
+                last_time = last_alerts.get(key)
+    
+                if not last_time or now - last_time > timedelta(minutes=10):
+                    stocks += stock + " , "
+                    last_alerts[key] = now  # Update alert time
+    
+            if stocks:
+                send_notification(stocks.strip(" ,"), "ADX Buy Entry")
         else:
             time.sleep(15)
 

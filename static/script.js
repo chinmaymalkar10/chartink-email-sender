@@ -4,9 +4,11 @@ function fetchLogs() {
         .then(data => {
             const buyDiv = document.getElementById("buyLogs");
             const sellDiv = document.getElementById("sellLogs");
+            const adxBuyDiv = document.getElementById("adxBuyLogs");
 
             buyDiv.innerHTML = "";
             sellDiv.innerHTML = "";
+            adxBuyDiv.innerHTML = "";
 
             data.buy.forEach(line => {
                 const p = document.createElement('p');
@@ -18,6 +20,12 @@ function fetchLogs() {
                 const p = document.createElement('p');
                 p.textContent = line;
                 sellDiv.appendChild(p);
+            });
+
+            data.adx_buy.forEach(line => {
+                const p = document.createElement('p');
+                p.textContent = line;
+                adxBuyDiv.appendChild(p);
             });
         });
 }
