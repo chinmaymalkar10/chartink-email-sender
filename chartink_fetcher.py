@@ -88,7 +88,7 @@ def poll_chartink():
                 key = (stock, "ADX Buy Entry")
                 last_time = last_alerts.get(key)
     
-                if not last_time or now - last_time > timedelta(minutes=10):
+                if not last_time or last_time.date() < now.date():
                     stocks += stock + " , "
                     last_alerts[key] = now  # Update alert time
     
