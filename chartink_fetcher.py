@@ -18,9 +18,9 @@ stocks = [
     "TATACHEM", "TCS", "TATACONSUM", "TECHM", "TITAN", "TORNTPHARM", "TORNTPOWER", "UBL", "UNITDSPR", "VOLTAS"
 ]
 
-condition_sell = "( ( [0] 5 minute adx ( 14 ) > 25 and [0] 5 minute close >= 800 and [0] 5 minute close <= 4000 and [0] 5 minute close < [0] 5 minute sma ( close,8 ) and [0] 5 minute close < 1 day ago low and [-1] 5 minute close > 1 day ago low and abs ( 1 day ago low - latest open ) <= latest open * 0.007 ) ) "
+condition_sell = "( (  [0] 5 minute adx ( 14 ) >  25 and  [0] 5 minute close >=  800 and  [0] 5 minute close <=  4000 and  [0] 5 minute close <  [0] 5 minute sma ( close,8 ) and  [0] 5 minute close <  1 day ago low and  [-1] 5 minute close >  1 day ago low ) )"
 
-condition_buy = "( ( [0] 5 minute adx ( 14 ) > 25 and [0] 5 minute close >= 800 and [0] 5 minute close <= 4000 and [0] 5 minute close > [0] 5 minute sma ( close,8 ) and [0] 5 minute close > 1 day ago high and [-1] 5 minute close <= 1 day ago high ) ) "
+condition_buy = "( (  [0] 5 minute adx ( 14 ) >  25 and  [0] 5 minute close >=  800 and  [0] 5 minute close <=  4000 and  [0] 5 minute close >  [0] 5 minute sma ( close,8 ) and  [0] 5 minute close >  1 day ago high and  [-1] 5 minute close <=  1 day ago high ) )"
 
 condition_adx_buy = " ( ( [0] 5 minute adx ( 14 ) > 25 and [0] 5 minute close >= 800 and [0] 5 minute close <= 4000 and [0] 5 minute close > [0] 5 minute sma ( close,8 ) and [0] 5 minute close > [0] 5 minute ema ( [0] 5 minute close , 8 ) and [0] 5 minute close > [0] 5 minute ema ( [0] 5 minute close , 21 ) and [0] 5 minute close > 1 day ago high ) )  "
 
