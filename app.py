@@ -13,21 +13,29 @@ def home():
 
 @app.route('/logs')
 def get_logs():
-    buy_logs, sell_logs, adx_buy_logs = [], [], []
+    # buy_logs, sell_logs, adx_buy_logs = [], [], []
+    aayushi_buy_logs, aayushi_sell_logs = [], []
     if os.path.exists("log.txt"):
         with open("log.txt", "r") as f:
             lines = f.readlines()
         for line in lines[-100:]:  # Only last 100 entries
-            if "ADX Buy Entry" in line:
-                adx_buy_logs.append(line.strip())
-            elif "Buy Entry" in line:   # put this after ADX to avoid overlap
-                buy_logs.append(line.strip())
-            elif "Sell Entry" in line:
-                sell_logs.append(line.strip())
+            # Check "Aayushi ..." first: "Aayushi Buy Entry" also contains "Buy Entry"
+            if "Aayushi Buy Entry" in line:
+                aayushi_buy_logs.append(line.strip())
+            elif "Aayushi Sell Entry" in line:
+                aayushi_sell_logs.append(line.strip())
+            # elif "ADX Buy Entry" in line:
+            #     adx_buy_logs.append(line.strip())
+            # elif "Buy Entry" in line:   # put this after ADX to avoid overlap
+            #     buy_logs.append(line.strip())
+            # elif "Sell Entry" in line:
+            #     sell_logs.append(line.strip())
     return jsonify({
-        "buy": buy_logs,
-        "sell": sell_logs,
-        "adx_buy": adx_buy_logs
+        # "buy": buy_logs,
+        # "sell": sell_logs,
+        # "adx_buy": adx_buy_logs,
+        "aayushi_buy": aayushi_buy_logs,
+        "aayushi_sell": aayushi_sell_logs
     })
 
 if __name__ == '__main__':
